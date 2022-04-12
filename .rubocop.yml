@@ -1,0 +1,38 @@
+inherit_from:
+  - https://raw.githubusercontent.com/omu/omu/master/etc/rubocop/rubocop.yml
+  - https://raw.githubusercontent.com/omu/omu/master/etc/rubocop/rubocop-minitest.yml
+  - https://raw.githubusercontent.com/omu/omu/master/etc/rubocop/rubocop-performance.yml
+  - https://raw.githubusercontent.com/omu/omu/master/etc/rubocop/rubocop-rails.yml
+
+Rails:
+  Enabled: true
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - production
+    - test
+
+Layout/LineLength:
+  Exclude:
+    - config/initializers/devise.rb
+    - Gemfile
+Metrics/BlockLength:
+  Exclude:
+    - config/routes/**/*
+    - lib/tasks/**/*.rake
+Metrics/ClassLength:
+  Exclude:
+    - test/**/*.rb
+
+AllCops:
+  TargetRubyVersion: 3.1.1
+  # Do not exclude files from ALL COPS unless it's really necessary!
+  Exclude:
+    - bin/**/*
+    - tmp/**/*
+    - db/schema.rb
+    - db/migrate/*.rb
+    - config/environments/*.rb
+    - config/routes.rb
+    - node_modules/**/*
+    - vendor/bundle/**/*
