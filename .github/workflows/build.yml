@@ -38,6 +38,10 @@ jobs:
           bundle config set without development
           bundle install --jobs 4 --retry 3
           yarn install
+      - name: Build css and js
+        run: |
+          yarn run build
+          yarn run build:css
       - name: Run tasks
         run: |
           bundle exec rails static_analysis:all
