@@ -12,9 +12,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: acme
-          POSTGRES_PASSWORD: acme
-          POSTGRES_DB: acme
+          POSTGRES_USER: plagiarism_control
+          POSTGRES_PASSWORD: plagiarism_control
+          POSTGRES_DB: plagiarism_control
         ports:
           - "5432:5432"
     steps:

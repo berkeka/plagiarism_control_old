@@ -25,7 +25,7 @@ Metrics/ClassLength:
     - test/**/*.rb
 
 AllCops:
-  TargetRubyVersion: 3.1.1
+  TargetRubyVersion: 3.0
   # Do not exclude files from ALL COPS unless it's really necessary!
   Exclude:
     - bin/**/*
