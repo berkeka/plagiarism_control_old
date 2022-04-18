@@ -6,5 +6,5 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one :user_github_auth_token
+  has_one :user_github_auth_token, dependent: :destroy
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Users
   class RegistrationsController < Devise::RegistrationsController
     def edit
@@ -6,6 +8,7 @@ module Users
     end
 
     private
+
     def github_client_id
       Rails.application.credentials.dig(:github, :client_id)
     end
