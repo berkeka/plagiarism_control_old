@@ -33,6 +33,8 @@ gem 'cssbundling-rails'
 gem 'jbuilder'
 
 gem 'devise'
+gem 'faraday'
+gem 'faraday-cookie_jar'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
