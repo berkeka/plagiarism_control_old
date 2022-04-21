@@ -22,10 +22,8 @@ module Github
     private
 
     def create_client
-      @connection = Faraday.new(url: GITHUB_BASE_URL, headers: { 'Content-Type' => 'application/json' }) do |builder|
-        builder.use :cookie_jar
-        builder.adapter Faraday.default_adapter
-      end
+      @connection = Faraday.new(url:     GITHUB_BASE_URL,
+                                headers: { 'Content-Type' => 'application/json' })
     end
   end
 

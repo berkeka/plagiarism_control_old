@@ -34,7 +34,7 @@ gem 'jbuilder'
 
 gem 'devise'
 gem 'faraday'
-gem 'faraday-cookie_jar'
+gem 'octokit', '~> 4.0'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
