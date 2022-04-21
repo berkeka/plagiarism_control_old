@@ -27,6 +27,8 @@ module Users
     def github_revoke
       if current_user.github_auth_token.destroy
         flash[:notice] = t('github_revoke_success')
+      else
+        flash[:alert] = t('github_revoke_success')
       end
       redirect_to edit_user_registration_path
     end

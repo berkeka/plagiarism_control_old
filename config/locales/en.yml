@@ -32,3 +32,4 @@
 en:
   github_link_success: "Github account linked succesfully."
   github_revoke_success: "Github link revoked successfully."
+  github_revoke_fail: "Github link revocation failed."
