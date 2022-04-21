@@ -21,6 +21,8 @@
     <% end %>
   </div>
 
+  <%= link_to "Connect your Github", auth_url %>
+
   <div class="field">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
@@ -44,4 +46,3 @@
 
 
 <br>
-<a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<%= @github_client_id %>">Connect your Github</a>
