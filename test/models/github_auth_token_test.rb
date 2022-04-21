@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class UserGithubAuthTokenTest < ActiveSupport::TestCase
+class GithubAuthTokenTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
