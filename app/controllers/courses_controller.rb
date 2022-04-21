@@ -4,6 +4,7 @@ class CoursesController < ApplicationController
   require 'octokit'
 
   before_action :authenticate_user!
+  before_action :enforce_github_link!, only: %i[new]
 
   def index; end
 
