@@ -20,6 +20,6 @@ class CoursesController < ApplicationController
   private
 
   def client
-    Octokit::Client.new(access_token: current_user.user_github_auth_token.access_token)
+    Octokit::Client.new(access_token: current_user.github_auth_token.access_token)
   end
 end
