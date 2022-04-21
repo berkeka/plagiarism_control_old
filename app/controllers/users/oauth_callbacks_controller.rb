@@ -17,7 +17,7 @@ module Users
                      GithubAuthToken.new(access_token: token_string)
 
         current_user.update(github_auth_token: auth_token)
-        flash[:notice] = t('github_link_success')
+        flash[:notice] = t('github.link_success')
       else
         flash[:alert] = response_params['error_description']
       end
@@ -26,9 +26,9 @@ module Users
 
     def github_revoke
       if current_user.github_auth_token.destroy
-        flash[:notice] = t('github_revoke_success')
+        flash[:notice] = t('github.revoke_success')
       else
-        flash[:alert] = t('github_revoke_success')
+        flash[:alert] = t('github.revoke_error')
       end
       redirect_to edit_user_registration_path
     end
