@@ -30,6 +30,7 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  github_required_error: "This action requires a Github link to be present."
   github_link_success: "Github account linked succesfully."
   github_revoke_success: "Github link revoked successfully."
   github_revoke_fail: "Github link revocation failed."
