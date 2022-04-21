@@ -1,25 +1,27 @@
 <h2>Log in</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <div class="field form-control w-full max-w-xs">
+    <%= f.label :email, class: 'label label-text' %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'input input-bordered w-full max-w-xs' %>
   </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
+  <div class="field form-control w-full max-w-xs">
+    <%= f.label :password, class: 'label label-text cursor-pointer' %><br />
+    <%= f.password_field :password, autocomplete: "current-password", class: 'input input-bordered w-full max-w-xs' %>
   </div>
 
   <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="field form-control w-full max-w-xs">
+      <label class="label cursor-pointer">
+        <%= f.label :remember_me, class: 'label label-text'%>
+        <%= f.check_box :remember_me, class: 'checkbox' %>
+      </label>
     </div>
   <% end %>
 
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= f.submit "Log in", class: 'btn btn-ghost' %>
   </div>
 <% end %>
 
