@@ -3,14 +3,8 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
     def edit
-      @github_client_id = github_client_id
+      @is_github_linked = !!current_user.user_github_auth_token
       super
-    end
-
-    private
-
-    def github_client_id
-      Rails.application.credentials.dig(:github, :client_id)
     end
   end
 end

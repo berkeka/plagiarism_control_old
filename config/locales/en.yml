@@ -30,4 +30,5 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  github_account_success: "Github account added succesfully."
+  github_link_success: "Github account linked succesfully."
+  github_revoke_success: "Github link revoked successfully."

@@ -21,7 +21,19 @@
     <% end %>
   </div>
 
-  <%= link_to "Connect your Github", auth_url %>
+  <% if @is_github_linked %>
+    Github Account Linked 
+    <a href="<%= oauth2_revoke_url %>">
+      <button class="btn btn-sm btn-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M6 18L18 6M6 6l12 12" /></svg>
+      </button>
+    </a>
+    <br>
+    <%= link_to "Refresh your token", auth_url, class: 'btn btn-md' %> <br>
+  <% else %>
+    <%= link_to "Connect your Github", auth_url, class: 'btn btn-md' %>
+  <% end %>
+  
 
   <div class="field">
     <%= f.label :password_confirmation %><br />
