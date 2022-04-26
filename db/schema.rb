@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_17_145511) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_25_202041) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "courses", force: :cascade do |t|
+    t.string "login"
+    t.string "name"
+    t.string "description"
+    t.string "url"
+    t.string "html_url"
+    t.string "avatar_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["login"], name: "index_courses_on_login", unique: true
+  end
 
   create_table "github_auth_tokens", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -22,6 +34,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_17_145511) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_github_auth_tokens_on_user_id"
+  end
+
+  create_table "user_courses", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_user_courses_on_course_id"
+    t.index ["user_id"], name: "index_user_courses_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -37,4 +58,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_17_145511) do
   end
 
   add_foreign_key "github_auth_tokens", "users"
+  add_foreign_key "user_courses", "courses"
+  add_foreign_key "user_courses", "users"
 end

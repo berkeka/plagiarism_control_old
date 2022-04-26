@@ -1,2 +1,8 @@
-<h1>Courses#index</h1>
-<p>Find me in app/views/courses/index.html.erb</p>
+<div class="container mx-auto">
+    <h1>My Courses</h1>
+    <%= link_to 'Add a course', new_course_url, class: 'btn btn-main' %>
+
+    <% @courses.each do |course| %>
+        <%= render 'course_card', course: course %>
+    <% end %>
+</div>

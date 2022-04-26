@@ -3,7 +3,9 @@
 module Users
   class OauthCallbacksController < ApplicationController
     require Rails.root.join('app/services/github.rb')
+
     before_action :authenticate_user!
+    before_action :enforce_github_link!, only: %i[github_revoke]
 
     def github # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       client = Github::OAuthClient.new

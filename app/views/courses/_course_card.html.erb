@@ -1,9 +1,13 @@
 <div class="card w-96 bg-base-100 shadow-xl">
   <div class="card-body">
-    <h2 class="card-title"><%= org.login %></h2>
-    <p><%= org.description %></p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary">Add course</button>
+    <div class="avatar">
+      <div class="w-12 rounded">
+        <img src="<%= course.avatar_url %>" />
+      </div>
     </div>
+    <%= link_to course do %>
+      <h2 class="card-title"><%= course.login %></h2>
+    <% end %>
+    <p><%= course.description %></p>
   </div>
 </div>

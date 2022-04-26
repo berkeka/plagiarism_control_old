@@ -31,7 +31,8 @@
 
 en:
   courses:
-    name: 'Courses'
+    name: "Courses"
+    already_registered: "Course is already registered."
   github:
     required_error: "This action requires a Github link to be present."
     link_success: "Github account linked succesfully."
