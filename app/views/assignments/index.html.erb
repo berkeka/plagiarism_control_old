@@ -1,0 +1,7 @@
+<h2>Assignments for <%= @course.name %></h2>
+<%= link_to 'Add an assignment', new_course_assignment_url, class: 'btn btn-main' %> <br>
+
+<% @assignments.each do |assignment|%>
+    <%= link_to assignment.name, course_assignment_path(id: assignment.id) %>
+    <p><%= assignment.description%></p>
+<% end %>

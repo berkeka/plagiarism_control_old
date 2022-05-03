@@ -1,2 +1,4 @@
-<h1>Courses#show</h1>
-<p>Find me in app/views/courses/show.html.erb</p>
+<h2><%= @course.name %></h2>
+<p><%= @course.description %></p>
+
+<%= link_to 'Assignments', course_assignments_url(course_id: @course.id), class: 'btn btn-main' %>

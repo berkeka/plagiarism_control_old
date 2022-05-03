@@ -1,0 +1,51 @@
+<div class="form-control w-full max-w-xs py-2">
+    <label class="label label-text">Search</label>
+    <input class="input input-bordered w-full max-w-xs" type="search" name="search" id="search" oninput="filter()">
+</div>
+<div class="container">
+    <% @repos.each do |repo| %>
+        <div class="card card-normal w-96 bg-base-100 shadow-xl">
+            <div class="card-body">
+                <div class="card-title">
+                    <h2><%= repo.name %></h2>
+                </div>
+                <p><%= repo.description %></p>
+                <div class="card-actions justify-end">
+                    <%= form_for(:assignment, url: course_assignments_path) do |f| %>
+                        <%= f.hidden_field :name, value: repo.name, readonly: true %>
+                        <div class="actions">
+                            <%= f.submit 'Add Assignment', class: 'btn btn-primary' %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<script type="text/javascript">
+    function getSearchValue() {
+        return document.getElementById("search").value;
+    }
+
+    function filter() {
+        const query = getSearchValue();
+        document.querySelectorAll(".card").forEach((repoCard) => {
+            const cardTitleElement = repoCard.querySelector('h2');
+            if (cardTitleElement.innerText.includes(query)) {
+                setVisible(repoCard);
+            }
+            else {
+                setInvisible(repoCard);
+            }
+        });
+    }
+    
+    function setVisible(element) {
+        element.style.display = 'block';
+    }
+
+    function setInvisible(element) {
+        element.style.display = 'none';
+    }
+</script>

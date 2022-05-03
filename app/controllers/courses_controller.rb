@@ -4,7 +4,8 @@ class CoursesController < ApplicationController
   require 'octokit'
 
   before_action :authenticate_user!
-  before_action :enforce_github_link!, only: %i[new]
+  before_action :enforce_github_link!, only: %i[new create]
+  before_action :set_course, only: :show
 
   KEYS = %i[login name description url html_url avatar_url].freeze
 
@@ -20,7 +21,7 @@ class CoursesController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
-    org = client.organization(course_params['name'])
+    org = client.organization(course_params[:name])
     existing_course = current_user.courses.find_by(login: org.login)
 
     if existing_course
@@ -43,12 +44,21 @@ class CoursesController < ApplicationController
 
   private
 
+  def set_course
+    course = Course.find(params[:id])
+    if course.users.include? current_user
+      @course = course
+    else
+      redirect_to courses_path
+    end
+  end
+
   def course_params
     params.require(:course).permit(:name)
   end
 
   def org_to_course_params(org)
-    org.to_h.select { |k, _v| KEYS.include? k }
+    org.to_h.select { |k, _| KEYS.include? k }
   end
 
   def client
