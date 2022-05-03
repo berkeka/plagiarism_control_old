@@ -7,8 +7,6 @@ class CoursesController < ApplicationController
   before_action :enforce_github_link!, only: %i[new create]
   before_action :set_course, only: :show
 
-  KEYS = %i[login name description url html_url avatar_url].freeze
-
   def index
     @courses = current_user.courses
   end
@@ -58,7 +56,7 @@ class CoursesController < ApplicationController
   end
 
   def org_to_course_params(org)
-    org.to_h.select { |k, _| KEYS.include? k }
+    org.to_h.select { |k, _| Course.FROM_ORG_KEYS.include? k }
   end
 
   def client

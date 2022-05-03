@@ -8,4 +8,6 @@ class Course < ApplicationRecord
 
   validates :login, :name, :url, :html_url, :avatar_url, :description, presence: true
   validates :login, uniqueness: true
+
+  FROM_ORG_KEYS = %i[login name description url html_url avatar_url].freeze
 end

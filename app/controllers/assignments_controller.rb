@@ -42,7 +42,7 @@ class AssignmentsController < ApplicationController
   end
 
   def repo_to_assignment_params(repo)
-    repo.to_h.select { |k, _| %i[name description].include? k }
+    repo.to_h.select { |k, _| Assignment.FROM_REPO_KEYS.include? k }
   end
 
   def set_course
