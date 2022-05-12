@@ -56,7 +56,7 @@ class CoursesController < ApplicationController
   end
 
   def org_to_course_params(org)
-    org.to_h.select { |k, _| Course.FROM_ORG_KEYS.include? k }
+    org.to_h.select { |k, _| Course::FROM_ORG_KEYS.include? k }
   end
 
   def client
