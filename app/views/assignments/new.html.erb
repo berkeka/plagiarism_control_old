@@ -2,7 +2,7 @@
     <label class="label label-text">Search</label>
     <input class="input input-bordered w-full max-w-xs" type="search" name="search" id="search" oninput="filter()">
 </div>
-<div class="container">
+<div class="container grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
     <% @repos.each do |repo| %>
         <div class="card card-normal w-96 bg-base-100 shadow-xl">
             <div class="card-body">

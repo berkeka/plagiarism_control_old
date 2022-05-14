@@ -1,7 +1,7 @@
-<div class="container mx-auto">
-    <h1>My Courses</h1>
-    <%= link_to 'Add a course', new_course_url, class: 'btn btn-main' %>
+<h1>My Courses</h1>
+<%= link_to 'Add a course', new_course_url, class: 'btn btn-main' %>
 
+<div class="container mx-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
     <% @courses.each do |course| %>
         <%= render 'course_card', course: course %>
     <% end %>

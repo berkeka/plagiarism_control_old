@@ -1,3 +1,5 @@
-<% @orgs.each do |org| %>
-    <%= render 'new_course_card', org: org %>
-<% end %>
+<div class="container grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+    <% @orgs.each do |org| %>
+        <%= render 'new_course_card', org: org %>
+    <% end %>
+</div>
