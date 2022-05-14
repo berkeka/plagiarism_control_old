@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'oauth2/revoke', to: 'users/oauth_callbacks#github_revoke'
 
   resources :courses, only: %i(index show new create destroy) do
-    resources :assignments, only: %i(index show new create)
+    resources :assignments, only: %i(index show new create) do
+      resources :admissions, only: :index
+    end
   end
 end
