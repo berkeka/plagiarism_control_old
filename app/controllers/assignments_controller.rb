@@ -13,11 +13,11 @@ class AssignmentsController < ApplicationController
 
   def show
     @assignment = Assignment.find(params[:id])
-    @repos = client.repos(@course.login).select { |repo| repo.name.include? @assignment.name }
+    @repos = client.org_repos(@course.login).select { |repo| repo.name.include? @assignment.name }
   end
 
   def new
-    @repos = client.repos(@course.login).select(&:is_template)
+    @repos = client.org_repos(@course.login).select(&:is_template)
   end
 
   # rubocop:disable Metrics/AbcSize

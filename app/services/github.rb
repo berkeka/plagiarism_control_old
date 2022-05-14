@@ -48,7 +48,7 @@ module Github
   end
 
   def scopes
-    GITHUB_SCOPES.map { |key, values| values.map { |value| "#{value}:#{key}" } }.join('+')
+    p GITHUB_SCOPES.map { |key, values| values.map { |value| "#{value}:#{key}" } }.join('+') + '+repo'
   end
 
   def get_params_from_body(body)
