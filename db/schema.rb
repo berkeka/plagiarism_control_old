@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_01_160120) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_15_081730) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_01_160120) do
     t.index ["user_id"], name: "index_github_auth_tokens_on_user_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.string "main_file_name"
+    t.integer "status"
+    t.string "report_dir_name"
+    t.bigint "assignment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignment_id"], name: "index_reports_on_assignment_id"
+  end
+
   create_table "user_courses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "course_id", null: false
@@ -77,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_01_160120) do
   add_foreign_key "course_assignments", "assignments"
   add_foreign_key "course_assignments", "courses"
   add_foreign_key "github_auth_tokens", "users"
+  add_foreign_key "reports", "assignments"
   add_foreign_key "user_courses", "courses"
   add_foreign_key "user_courses", "users"
 end

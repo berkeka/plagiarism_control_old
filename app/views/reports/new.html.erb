@@ -1,0 +1,9 @@
+<%= form_with model: [:course, :assignment, @report], url: course_assignment_report_create_path do |f| %>
+    <div class="form-control w-full max-w-xs">
+        <%= f.label 'Main file name for the assignment', class: 'label label-text' %><br />
+        <%= f.text_field :main_file_name, class: 'input input-bordered w-full max-w-xs'%>
+    </div>
+    <div class="actions">
+        <%= f.submit 'Create Report', class: 'btn btn-primary' %>
+    </div>
+<% end %>

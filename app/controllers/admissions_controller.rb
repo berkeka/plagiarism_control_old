@@ -4,7 +4,7 @@ class AdmissionsController < ApplicationController
   before_action :authenticate_user!, :enforce_github_link!, :set_course, :set_assignment
   
   def index
-    @repos = client.org_repos(@course.login).select { |repo| repo.name.include? @assignment.name }
+    @repos = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}-" }
   end
   
   private
