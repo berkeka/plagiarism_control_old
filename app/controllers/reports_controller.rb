@@ -1,45 +1,69 @@
 class ReportsController < ApplicationController
   require 'octokit'
-  require 'fileutils'
+  require 'csv'
 
   before_action :authenticate_user!, :enforce_github_link!, :set_course
   before_action :set_assignment, except: :course_reports
+  before_action :report_doesnt_exists?, only: :create
+
+  def show
+    @report = @assignment.report
+
+    if @report && @report.done?
+      @pairs = CSV.parse(File.read("#{report_path}/pairs.csv"), headers: true, converters: :numeric)
+    elsif @report && @report.ongoing?
+      flash[:alert] = 'Report generation ongoing.'
+    else
+      flash[:alert] = 'No report available.'
+    end
+  end
 
   def new
     @report = Report.new
   end
 
-  def show; end
-
   def create
-    repos = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}" }
+    repos = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}-" }
 
-    # TODO move the file and report creation to background jobs
-    repos.each do |repo|
-      contents = client.contents(org_repo_name(repos.first.name), path: params[:report][:main_file_name])
+    return redirect_to course_assignment_report_new_path, alert: 'At least 2 admissions are needed' if repos.count < 2
 
-      if contents.kind_of?(Array)
-        flash[:alert] = 'No file with the given filename'
-        redirect_to course_assignment_report_new_path
+    # Check if file with given main_file_name exists on github repos
+    begin
+      example_content = client.contents(org_repo_name(repos.first.name), path: params[:report][:main_file_name])
+    rescue Octokit::NotFound
+      redirect_to course_assignment_report_new_path, alert: 'No file with the given filename'
+    else
+      if example_content.kind_of?(Array)
+        redirect_to course_assignment_report_new_path, alert: 'Filename isnt specified'
       else
-        # Create directory for assignment if it doesnt exists
-        directory_name = "storage/#{@course.login}/#{@assignment.name}"
-        FileUtils.mkdir_p(directory_name) unless File.directory?(directory_name)
+        report = Report.create(main_file_name: params[:report][:main_file_name], assignment_id: @assignment.id)
 
-        # Write file content
-        content = Base64.decode64(contents.content)
-        File.write("#{directory_name}/#{repo.name}.rb", content)
+        contents = repos.each.inject({}) do |hash, repo|
+          content = client.contents(org_repo_name(repo.name), path: params[:report][:main_file_name]).to_h
+          hash[repo.name] = content[:content]
 
+          hash
+        end
+
+        CreateReportJob.perform_async(@assignment.id, report.id, contents)
         redirect_to course_assignment_report_path
       end
     end
   end
 
+  def destroy
+    @assignment.report.destroy
+  end
+
   def course_reports
-    @course.reports
+    @reports = @course.reports
   end
 
   private
+
+  def report_params
+    params.require(:report).permit(:main_file_name)
+  end
 
   def set_course
     @course = Course.find(params[:course_id])
@@ -51,6 +75,14 @@ class ReportsController < ApplicationController
 
   def org_repo_name(repo_name)
     "#{@course.login}/#{repo_name}"
+  end
+
+  def report_doesnt_exists?
+    redirect_to course_assignment_report_path unless @assignment.report.nil?
+  end
+
+  def report_path
+    "storage/#{@course.login}/#{@assignment.name}/report"
   end
 
   def client

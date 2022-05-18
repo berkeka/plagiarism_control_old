@@ -1,0 +1,29 @@
+<% if @pairs %>
+    <div class="overflow-x-auto">
+    <table class="table table-compact w-full">
+        <thead>
+        <tr>
+            <% @pairs.headers.each do |header| %>
+                <th><%= header %></th> 
+            <% end %>
+        </tr>
+        </thead> 
+        <tbody>
+            <% @pairs.each do |pair| %>
+                <tr>
+                    <% pair.each do |value| %>
+                        <td><%= value[1] %></td>
+                    <% end %>
+                </tr> 
+            <% end %>
+        </tbody> 
+        <tfoot>
+        <tr> 
+            <% @pairs.headers.each do |header| %>
+                <th><%= header %></th> 
+            <% end %>
+        </tr>
+        </tfoot>
+    </table>
+    </div>
+<% end %>

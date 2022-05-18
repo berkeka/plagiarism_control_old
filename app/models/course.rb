@@ -5,7 +5,7 @@ class Course < ApplicationRecord
   has_many :users, through: :user_courses
   has_many :course_assignments, dependent: :destroy
   has_many :assignments, through: :course_assignments
-  #has_many :reports, through: :assignments
+  has_many :reports, through: :assignments
 
   validates :login, :url, :html_url, :avatar_url, presence: true
   validates :login, uniqueness: true
