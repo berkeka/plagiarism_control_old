@@ -39,3 +39,5 @@
 .env
 .envrc
 /.rubocop-*-yml
+
+*.rdb
