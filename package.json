@@ -2,13 +2,15 @@
   "name": "app",
   "private": "true",
   "dependencies": {
+    "@dodona/dolos": "^1.5.1",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo-rails": "^7.1.1",
     "autoprefixer": "^10.4.4",
     "daisyui": "^2.13.6",
     "esbuild": "^0.14.28",
     "postcss": "^8.4.12",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.0.23",
+    "tree-sitter-ruby": "^0.19.0"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
