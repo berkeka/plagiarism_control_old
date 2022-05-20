@@ -11,7 +11,9 @@ class CoursesController < ApplicationController
     @courses = current_user.courses
   end
 
-  def show; end
+  def show
+    authorize @course
+  end
 
   def new
     @orgs = client.organizations
@@ -43,12 +45,7 @@ class CoursesController < ApplicationController
   private
 
   def set_course
-    course = Course.find(params[:id])
-    if course.users.include? current_user
-      @course = course
-    else
-      redirect_to courses_path
-    end
+    @course = Course.find(params[:id])
   end
 
   def course_params

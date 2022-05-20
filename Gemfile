@@ -36,6 +36,7 @@ gem 'devise'
 gem 'faraday'
 gem 'octokit', '~> 4.0'
 gem 'sidekiq'
+gem "pundit", "~> 2.2"
 
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
