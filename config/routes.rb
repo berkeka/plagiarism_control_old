@@ -10,8 +10,6 @@ Rails.application.routes.draw do
     get 'reports', to: 'reports#course_reports'
 
     resources :assignments, only: %i(index show new create) do
-      resources :admissions, only: :index
-      
       get 'report', to: 'reports#show'
       get 'report/new', to: 'reports#new'
       post 'report/create', to: 'reports#create'

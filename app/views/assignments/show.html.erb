@@ -1,5 +1,16 @@
-<%= link_to 'View Admissions', course_assignment_admissions_path(assignment_id: @assignment.id), class: 'btn btn-main' %>
-<%= link_to 'Report', course_assignment_report_path(assignment_id: @assignment.id) , class: 'btn btn-main' %> <br>
-
-<h2><%= @assignment.name %></h3>
-<p><%= @assignment.description%></p>
+<div>
+    <div class="flex justify-between items-center">
+        <p class="text-lg"><%= @assignment.name %></p>
+        <div class="actions">
+            <%= link_to 'Report', course_assignment_report_path(assignment_id: @assignment.id) , class: 'btn btn-main' %>
+        </div>
+    </div>
+    <div>
+        <%= @assignment.description %>
+        <div class="container mx-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 py-2">
+            <% @admissions.each do |admission|%>
+                <%= render 'admission_card', admission: admission %>
+            <% end %>
+        </div>
+    </div>
+</div>

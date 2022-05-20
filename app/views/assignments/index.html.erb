@@ -1,7 +1,14 @@
-<h2>Assignments for <%= @course.name %></h2>
-<%= link_to 'Add an assignment', new_course_assignment_url, class: 'btn btn-main' %> <br>
+<div>
+    <div class="flex justify-between items-center">
+        <p class="text-lg">Assignments for <%= @course.login %></p>
+        <div class="actions">
+            <%= link_to 'Add an assignment', new_course_assignment_url, class: 'btn btn-main' %>
+        </div>
+    </div>
+    <div class="container mx-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 py-2">
+        <% @assignments.each do |assignment|%>
+            <%= render 'assignment_card', assignment: assignment %>
+        <% end %>
+    </div>
+</div>
 
-<% @assignments.each do |assignment|%>
-    <%= link_to assignment.name, course_assignment_path(id: assignment.id) %>
-    <p><%= assignment.description%></p>
-<% end %>

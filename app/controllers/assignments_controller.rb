@@ -13,6 +13,7 @@ class AssignmentsController < ApplicationController
 
   def show
     @assignment = Assignment.find(params[:id])
+    @admissions = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}-" }
   end
 
   def new

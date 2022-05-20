@@ -1,10 +1,14 @@
-<div class="avatar">
-    <div class="w-24 rounded">
-    <img src="<%= @course.avatar_url %>" />
+<div>
+    <div class="grid justify-items-center">
+            <div class="avatar">
+            <div class="w-24 rounded">
+                <img src="<%= @course.avatar_url %>" />
+            </div>
+        </div>
+        <h2 class="text-xl"><%= @course.login %></h2>
+        <p><%= @course.description %></p>
     </div>
-</div>
-<h2><%= @course.login %></h2>
-<p><%= @course.description %></p>
 
-<%= link_to 'View in Github', @course.html_url, target: '_blank', class: 'btn btn-main' %>
-<%= link_to 'Assignments', course_assignments_url(course_id: @course.id), class: 'btn btn-main' %>
+    <%= link_to 'View in Github', @course.html_url, target: '_blank', class: 'btn btn-main' %>
+    <%= link_to 'Assignments', course_assignments_url(course_id: @course.id), class: 'btn btn-main' %>
+</div>

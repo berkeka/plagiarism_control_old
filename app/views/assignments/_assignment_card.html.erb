@@ -1,0 +1,8 @@
+<div class="card w-96 bg-base-100 shadow-xl">
+  <div class="card-body justify-between">
+    <%= link_to course_assignment_path(id: assignment.id) do %>
+        <h2 class="card-title"><%= assignment.name %></h2>
+    <% end %>
+    <p><%= assignment.description%></p>
+  </div>
+</div>

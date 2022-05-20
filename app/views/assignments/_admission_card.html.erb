@@ -1,0 +1,11 @@
+<div class="card card-normal w-96 bg-base-100 shadow-xl">
+    <div class="card-body">
+        <div class="card-title">
+            <h2><%= admission.name %></h2>
+        </div>
+        <p><%= admission.description %></p>
+        <div class="card-actions justify-end">
+            <%= link_to 'View in Github', admission.html_url , target: '_blank', class: 'btn btn-primary' %>
+        </div>
+    </div>
+</div>
