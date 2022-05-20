@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class AdmissionsController < ApplicationController
   require 'octokit'
 
   before_action :authenticate_user!, :enforce_github_link!, :set_course, :set_assignment
-  
+
   def index
     @repos = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}-" }
   end
-  
+
   private
 
   def client

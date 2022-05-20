@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReportsController < ApplicationController
   require 'octokit'
   require 'csv'
@@ -9,12 +11,12 @@ class ReportsController < ApplicationController
   def show
     @report = @assignment.report
 
-    if @report && @report.done?
+    if @report&.done?
       @pairs = CSV.parse(File.read("#{report_path}/pairs.csv"), headers: true, converters: :numeric)
-    elsif @report && @report.ongoing?
-      flash[:alert] = 'Report generation ongoing.'
+    elsif @report&.ongoing?
+      flash[:alert] = t('reports.ongoing')
     else
-      flash[:alert] = 'No report available.'
+      flash[:alert] = t('reports.none')
     end
   end
 
@@ -22,27 +24,26 @@ class ReportsController < ApplicationController
     @report = Report.new
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def create
     repos = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}-" }
 
-    return redirect_to course_assignment_report_new_path, alert: 'At least 2 admissions are needed' if repos.count < 2
+    return redirect_to course_assignment_report_new_path, alert: t('reports.min_admission_error') if repos.count < 2
 
-    # Check if file with given main_file_name exists on github repos
+    #  Check if file with given main_file_name exists on github repos
     begin
       example_content = client.contents(org_repo_name(repos.first.name), path: params[:report][:main_file_name])
     rescue Octokit::NotFound
-      redirect_to course_assignment_report_new_path, alert: 'No file with the given filename'
+      redirect_to course_assignment_report_new_path, alert: t('reports.no_file_error')
     else
-      if example_content.kind_of?(Array)
-        redirect_to course_assignment_report_new_path, alert: 'Filename isnt specified'
+      if example_content.is_a?(Array)
+        redirect_to course_assignment_report_new_path, alert: t('reports.filename_unspecified_error')
       else
         report = Report.create(main_file_name: params[:report][:main_file_name], assignment_id: @assignment.id)
 
-        contents = repos.each.inject({}) do |hash, repo|
+        contents = repos.each.each_with_object({}) do |repo, hash|
           content = client.contents(org_repo_name(repo.name), path: params[:report][:main_file_name]).to_h
           hash[repo.name] = content[:content]
-
-          hash
         end
 
         CreateReportJob.perform_async(@assignment.id, report.id, contents)
@@ -50,6 +51,7 @@ class ReportsController < ApplicationController
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def destroy
     @assignment.report.destroy
