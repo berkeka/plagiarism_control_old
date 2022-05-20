@@ -17,7 +17,8 @@ module DatabaseUrl
   end
 
   def production
-    "#{url}_production"
+    db_url = ENV['DATABASE_URL']
+    db_url.nil? ? "#{url}_production" : db_url
   end
 
   def test
