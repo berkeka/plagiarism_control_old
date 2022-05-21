@@ -32,7 +32,9 @@
 en:
   courses:
     name: "Courses"
-    already_registered: "Course is already registered."
+    created: 'Course created.'
+    exists: "Added existing course to your courses."
+    exists_added: "Course exists in your courses."
   reports:
     name: "Reports"
     ongoing: 'Report generation ongoing.'

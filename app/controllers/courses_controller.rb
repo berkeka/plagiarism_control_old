@@ -22,19 +22,25 @@ class CoursesController < ApplicationController
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
     org = client.organization(course_params[:name])
-    existing_course = current_user.courses.find_by(login: org.login)
+    existing_course = Course.find_by(login: org.login)
 
     if existing_course
-      flash[:notice] = t('courses.already_registered')
-      redirect_to new_course_path
+      if existing_course.users.include? current_user
+        existing_course.users << current_user unless 
+        existing_course.save
+
+        redirect_to existing_course, notice: t('courses.exists_added')
+      else
+        redirect_to existing_course, notice: t('courses.exists')
+      end
     else
       @course = Course.new(org_to_course_params(org))
-      current_user.courses << @course
+      @course.users << current_user
+
       if @course.save
-        redirect_to @course
+        redirect_to @course, notice: t('courses.created')
       else
-        flash[:notice] = @course.errors
-        redirect_to new_course_path
+        redirect_to new_course_path, alert: @course.errors
       end
     end
   end
