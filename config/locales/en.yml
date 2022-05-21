@@ -49,4 +49,14 @@ en:
     default: 'You cannot perform this action.'
     course_policy:
       show?: 'You cannot view this course!'
-      destroy?: 'You delete this course!'
+      destroy?: 'You cannot delete this course!'
+    assignment_policy:
+      index?: 'You cannot list assignments for this course!'
+      show?: 'You cannot view this assignment!'
+      new?: 'You cannot create an assignment for this course!'
+      create?: 'You cannot create an assignment for this course!'
+    report_policy:
+      show?: 'You cannot view this report!'
+      new?: 'You cannot create a report for this assignment!'
+      create?: 'You cannot create a report for this assignment!'
+      destroy?: 'You cannot delete this report!'

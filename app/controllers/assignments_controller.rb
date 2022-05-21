@@ -8,15 +8,20 @@ class AssignmentsController < ApplicationController
   before_action :set_course
 
   def index
-    @assignments = @course.assignments
+    @assignments = authorize @course.assignments
   end
 
   def show
-    @assignment = Assignment.find(params[:id])
+    @assignment = authorize Assignment.find(params[:id])
+
     @admissions = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}-" }
   end
 
   def new
+    @assignment = Assignment.new
+    @assignment.course = @course
+    authorize @assignment
+
     @repos = client.org_repos(@course.login).select(&:is_template)
   end
 
@@ -25,6 +30,8 @@ class AssignmentsController < ApplicationController
     repo = client.repo(org_repo_name(assignment_params[:name]))
     @assignment = Assignment.new(repo_to_assignment_params(repo))
     @assignment.course = @course
+
+    authorize @assignment
 
     if @assignment.save
       redirect_to course_assignment_path(course_id: @course.id, id: @assignment.id)

@@ -11,10 +11,14 @@ class ReportsController < ApplicationController
   def show
     @report = @assignment.report
 
-    if @report&.done?
-      @pairs = CSV.parse(File.read("#{report_path}/pairs.csv"), headers: true, converters: :numeric)
-    elsif @report&.ongoing?
-      flash[:alert] = t('reports.ongoing')
+    if @report
+      authorize @report, policy_class: ReportPolicy
+
+      if @report.done?
+        @pairs = CSV.parse(File.read("#{report_path}/pairs.csv"), headers: true, converters: :numeric)
+      else
+        flash[:alert] = t('reports.ongoing')
+      end
     else
       flash[:alert] = t('reports.none')
     end
@@ -22,10 +26,16 @@ class ReportsController < ApplicationController
 
   def new
     @report = Report.new
+    @report.assignment = @assignment
+
+    authorize @report
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def create
+    report = Report.new(main_file_name: params[:report][:main_file_name], assignment_id: @assignment.id)
+    authorize report
+
     repos = client.org_repos(@course.login).select { |repo| repo.name.include? "#{@assignment.name}-" }
 
     return redirect_to course_assignment_report_new_path, alert: t('reports.min_admission_error') if repos.count < 2
@@ -39,7 +49,7 @@ class ReportsController < ApplicationController
       if example_content.is_a?(Array)
         redirect_to course_assignment_report_new_path, alert: t('reports.filename_unspecified_error')
       else
-        report = Report.create(main_file_name: params[:report][:main_file_name], assignment_id: @assignment.id)
+        report.save
 
         contents = repos.each.each_with_object({}) do |repo, hash|
           content = client.contents(org_repo_name(repo.name), path: params[:report][:main_file_name]).to_h
@@ -54,11 +64,13 @@ class ReportsController < ApplicationController
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def destroy
-    @assignment.report.destroy
+    report = authorize @assignment.report, policy_class: ReportPolicy
+
+    report.destroy
   end
 
   def course_reports
-    @reports = @course.reports
+    @reports = authorize @course.reports, policy_class: ReportPolicy
   end
 
   private

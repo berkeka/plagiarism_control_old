@@ -9,10 +9,16 @@ class CoursePolicy
   end
 
   def show?
-    @course.users.include? @user
+    owns?
   end
 
   def destroy?
-    show?
+    owns?
+  end
+
+  private
+
+  def owns?
+    @course.users.include? @user
   end
 end
