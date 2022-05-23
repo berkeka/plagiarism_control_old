@@ -18,6 +18,10 @@ Rails.application.configure do
   config.server_timing = true
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :authentication => :cram_md5
+  }.merge(Rails.application.credentials.fetch(:smtp))
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
