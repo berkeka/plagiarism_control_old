@@ -26,7 +26,7 @@ class CoursesController < ApplicationController
 
     if existing_course
       if existing_course.users.include? current_user
-        existing_course.users << current_user unless 
+        existing_course.users << current_user unless
         existing_course.save
 
         redirect_to existing_course, notice: t('courses.exists_added')

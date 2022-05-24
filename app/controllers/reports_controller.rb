@@ -8,6 +8,7 @@ class ReportsController < ApplicationController
   before_action :set_assignment, except: :course_reports
   before_action :report_doesnt_exists?, only: :create
 
+  # rubocop:disable Metrics/MethodLength
   def show
     @report = @assignment.report
 
@@ -23,6 +24,7 @@ class ReportsController < ApplicationController
       flash[:alert] = t('reports.none')
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def new
     @report = Report.new

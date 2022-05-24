@@ -35,6 +35,6 @@ class ReportPolicy
   end
 
   def owns_collection?
-    @report.first&.assignment&.course&.users.include? @user
+    @report.first&.assignment&.course&.users&.include? @user
   end
 end
