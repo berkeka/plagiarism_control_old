@@ -62,4 +62,4 @@ en:
       new?: 'You cannot create a report for this assignment!'
       create?: 'You cannot create a report for this assignment!'
       destroy?: 'You cannot delete this report!'
-    oauth_error: 'A connection error related to Github occurred.'
+  oauth_error: 'A connection error related to Github occurred.'
