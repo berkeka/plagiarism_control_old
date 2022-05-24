@@ -8,7 +8,8 @@ class AssignmentsController < ApplicationController
   before_action :set_course
 
   def index
-    @assignments = authorize @course.assignments
+    authorize @course, policy_class: AssignmentPolicy
+    @assignments = @course.assignments
   end
 
   def show

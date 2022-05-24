@@ -31,6 +31,6 @@ class AssignmentPolicy
   end
 
   def owns_collection?
-    @assignment.first.course.users.include? @user
+    @assignment.users.include? @user
   end
 end
