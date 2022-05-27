@@ -11,12 +11,14 @@ class ReportsController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   def show
     @report = @assignment.report
+    redirect_to course_assignment_report_new_path(assignment_id: @assignment.id) if @assignment.report.nil?
 
     if @report
       authorize @report, policy_class: ReportPolicy
 
       if @report.done?
         @pairs = CSV.parse(File.read("#{report_path}/pairs.csv"), headers: true, converters: :numeric)
+        clean_pairs
       else
         flash[:alert] = t('reports.ongoing')
       end
@@ -45,6 +47,7 @@ class ReportsController < ApplicationController
     #  Check if file with given main_file_name exists on github repos
     begin
       example_content = client.contents(org_repo_name(repos.first.name), path: params[:report][:main_file_name])
+      extension = example_content[:name].split('.').last
     rescue Octokit::NotFound
       redirect_to course_assignment_report_new_path, alert: t('reports.no_file_error')
     else
@@ -58,7 +61,7 @@ class ReportsController < ApplicationController
           hash[repo.name] = content[:content]
         end
 
-        CreateReportJob.perform_async(@assignment.id, report.id, contents)
+        CreateReportJob.perform_async(@assignment.id, report.id, contents, extension)
         redirect_to course_assignment_report_path
       end
     end
@@ -87,6 +90,13 @@ class ReportsController < ApplicationController
 
   def set_assignment
     @assignment = Assignment.find(params[:assignment_id])
+  end
+
+  def clean_pairs
+    @pairs.map do |row|
+      row['rightFilePath'] = row['rightFilePath'].split('/').last
+      row['leftFilePath'] = row['leftFilePath'].split('/').last
+    end
   end
 
   def org_repo_name(repo_name)

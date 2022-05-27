@@ -8,6 +8,16 @@ class Report < ApplicationRecord
 
   enum status: { ongoing: 0, done: 1 }
 
+  LANGUAGES = {
+    'rb' => 'ruby',
+    'c' => 'c',
+    'py' => 'python',
+    'java' => 'java',
+    'js' => 'javascript',
+    'cs' => 'c-sharp',
+    'sh' => 'bash'
+  }
+
   private
 
   def set_default_status
