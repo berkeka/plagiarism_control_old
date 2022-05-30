@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
   before_action :set_assignment, except: :course_reports
   before_action :report_doesnt_exists?, only: :create
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def show
     @report = @assignment.report
     redirect_to course_assignment_report_new_path(assignment_id: @assignment.id) if @assignment.report.nil?
@@ -17,7 +17,15 @@ class ReportsController < ApplicationController
       authorize @report, policy_class: ReportPolicy
 
       if @report.done?
+        @extension = Report::LANGUAGES[@report.main_file_name.split('.').last]
         @pairs = CSV.parse(File.read("#{report_path}/pairs.csv"), headers: true, converters: :numeric)
+        @files = read_files("#{report_path}/files.csv")
+
+        respond_to do |format|
+          format.html
+          format.json { render json: { files: @files, language: @extension } }
+        end
+
         clean_pairs
       else
         flash[:alert] = t('reports.ongoing')
@@ -26,7 +34,7 @@ class ReportsController < ApplicationController
       flash[:alert] = t('reports.none')
     end
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def new
     @report = Report.new
@@ -96,6 +104,12 @@ class ReportsController < ApplicationController
     @pairs.map do |row|
       row['rightFilePath'] = row['rightFilePath'].split('/').last
       row['leftFilePath'] = row['leftFilePath'].split('/').last
+    end
+  end
+
+  def read_files(path_to_file)
+    CSV.read(path_to_file, headers: true).each_with_object({}) do |row, hash|
+      hash[row['id']] = row['content']
     end
   end
 
