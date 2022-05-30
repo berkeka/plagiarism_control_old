@@ -36,3 +36,4 @@ AllCops:
     - config/routes.rb
     - node_modules/**/*
     - vendor/bundle/**/*
+    - storage/**/*
