@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get 'report', to: 'reports#show'
       get 'report/new', to: 'reports#new'
       post 'report/create', to: 'reports#create'
+      delete 'report', to: 'reports#destroy', as: 'report_destroy'
     end
   end
 end

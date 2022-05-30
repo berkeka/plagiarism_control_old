@@ -42,6 +42,8 @@ en:
     min_admission_error: 'At least 2 admissions are needed'
     no_file_error: 'No file with the given filename'
     filename_unspecified_error: 'Filename isnt specified'
+    delete_success: 'Report deleted successfully'
+    delete_error: 'An error occurred during report deletion'
   github:
     required_error: "This action requires a Github link to be present."
     link_success: "Github account linked succesfully."

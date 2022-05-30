@@ -2,6 +2,9 @@
 <% if @pairs %>
     <div class="flex justify-between items-center">
         <h1 class="text-lg">Report</h1>
+        <div class="actions">
+            <%= link_to 'Delete Report', course_assignment_report_destroy_path, data: { turbo_confirm: "You sure?", turbo_method: 'delete' }, class: 'btn btn-main' %>
+        </div>
     </div>
     <div data-controller="report">
         <button data-action="click->report#back" data-report-target="button" class="btn btn-primary hidden">BACK</button>

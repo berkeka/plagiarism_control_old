@@ -79,7 +79,11 @@ class ReportsController < ApplicationController
   def destroy
     report = authorize @assignment.report, policy_class: ReportPolicy
 
-    report.destroy
+    if report.destroy
+      redirect_to course_assignment_path(@course, @assignment), notice: t('reports.delete_success')
+    else
+      flash[:alert] = t('reports.delete_error')
+    end
   end
 
   def course_reports
