@@ -20,7 +20,7 @@ class CreateReportJob
 
     contents.each do |repo_name, cryptic_content|
       #  Write file content
-      content = Base64.decode64(cryptic_content)
+      content = Base64.decode64(cryptic_content).force_encoding('UTF-8')
       File.write("#{directory_name}/#{repo_name}.#{extension}", content)
     end
 
