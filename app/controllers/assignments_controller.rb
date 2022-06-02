@@ -62,6 +62,9 @@ class AssignmentsController < ApplicationController
   end
 
   def client
-    Octokit::Client.new(access_token: current_user.github_auth_token.access_token)
+    client = Octokit::Client.new(access_token: current_user.github_auth_token.access_token)
+    client.auto_paginate = true
+
+    client
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
   require 'octokit'
   require 'csv'
@@ -28,7 +29,7 @@ class ReportsController < ApplicationController
 
         clean_pairs
       else
-        flash[:alert] = t('reports.ongoing')
+        flash[:notice] = t('reports.ongoing')
       end
     else
       flash[:alert] = t('reports.none')
@@ -55,21 +56,18 @@ class ReportsController < ApplicationController
     #  Check if file with given main_file_name exists on github repos
     begin
       example_content = client.contents(org_repo_name(repos.first.name), path: params[:report][:main_file_name])
-      extension = example_content[:name].split('.').last
     rescue Octokit::NotFound
       redirect_to course_assignment_report_new_path, alert: t('reports.no_file_error')
     else
       if example_content.is_a?(Array)
         redirect_to course_assignment_report_new_path, alert: t('reports.filename_unspecified_error')
       else
-        report.save
-
-        contents = repos.each.each_with_object({}) do |repo, hash|
-          content = client.contents(org_repo_name(repo.name), path: params[:report][:main_file_name]).to_h
-          hash[repo.name] = content[:content]
+        #  TODO Move job creation to a after create hook
+        #  FIXME Issue related to race condition with report creation and job
+        if report.save
+          CreateReportJob.perform_async(@assignment.id, report.id, get_repo_names(repos),
+                                        current_user.github_auth_token.access_token)
         end
-
-        CreateReportJob.perform_async(@assignment.id, report.id, contents, extension)
         redirect_to course_assignment_report_path
       end
     end
@@ -130,6 +128,16 @@ class ReportsController < ApplicationController
   end
 
   def client
-    Octokit::Client.new(access_token: current_user.github_auth_token.access_token)
+    client = Octokit::Client.new(access_token: current_user.github_auth_token.access_token)
+    client.auto_paginate = true
+
+    client
+  end
+
+  def get_repo_names(repos)
+    repos.each_with_object([]) do |repo, arr|
+      arr.push(repo.name)
+    end
   end
 end
+# rubocop:enable Metrics/ClassLength
